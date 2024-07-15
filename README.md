@@ -19,3 +19,7 @@ API key to use the API, and it is your responsibility to follow all the terms of
 
 	https://fred.stlouisfed.org/docs/api/api_key.html
 	https://fred.stlouisfed.org/docs/api/terms_of_use.html
+
+The default value for the API key in appsettings.json is a placeholder.  You must provide your own key and it
+is recommended that you use a secure method to store it, such as Azure Key Vault, or a user secret.  In User Secrets,
+the key is "FredClient:ApiKey".

@@ -1,6 +1,6 @@
-﻿using FredDeveloperKit.Models;
+﻿using FredDevelopmentKit.Models;
 
-namespace FredDeveloperKit.Services
+namespace FredDevelopmentKit.Services
 {
     public interface IFredCategoryService
     {

@@ -1,8 +1,7 @@
-﻿using FredDeveloperKit.Configuration;
-using FredDeveloperKit.Models;
+﻿using FredDevelopmentKit.Models;
 using System.Net.Http.Json;
 
-namespace FredDeveloperKit.Services
+namespace FredDevelopmentKit.Services
 {
     public class FredCategoryService : IFredCategoryService
     {

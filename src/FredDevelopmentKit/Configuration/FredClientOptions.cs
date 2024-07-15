@@ -1,4 +1,4 @@
-﻿namespace FredDeveloperKit.Configuration
+﻿namespace FredDevelopmentKit.Configuration
 {
     public class FredClientOptions
     {

@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using FredDeveloperKit.Models;
-using FredDeveloperKit.Services;
 using Microsoft.Extensions.Configuration;
-using FredDeveloperKit.Configuration;
+using FredDevelopmentKit.Models;
+using FredDevelopmentKit.Services;
+using FredDevelopmentKit.Configuration;
 
 namespace FredDKSample
 {
@@ -42,6 +42,10 @@ namespace FredDKSample
                 categoryService.SetApiKey(fredClientOptions.ApiKey);
             }
 
+            await GetSampleData(categoryService);
+        }
+        public static async Task GetSampleData(FredCategoryService? categoryService)
+        {
             Category? category = null;
             if (categoryService != null)
             {

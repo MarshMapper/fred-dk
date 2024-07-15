@@ -5,7 +5,7 @@ VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{C7B550E8-D2A2-4761-A0D7-04C8662A2092}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FredDeveloperKit", "src\FredDeveloperKit\FredDeveloperKit.csproj", "{1E593553-D4FF-4CE4-96A2-BC7B74F0751A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FredDevelopmentKit", "src\FredDevelopmentKit\FredDevelopmentKit.csproj", "{1E593553-D4FF-4CE4-96A2-BC7B74F0751A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FredDKSample", "src\FredDKSample\FredDKSample.csproj", "{8B0075AA-9E20-4798-9716-C95EE87D5B6F}"
 EndProject

@@ -6,5 +6,6 @@ namespace FredDevelopmentKit.Services
     {
         Task<List<Category>?> GetChildCategories(int categoryId);
         Task<Category?> GetCategory(int categoryId);
+        void SetApiKey(string apiKey);
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace FredDeveloperKit.Models
+﻿namespace FredDevelopmentKit.Models
 {
     public class Category
     {

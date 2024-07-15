@@ -7,7 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{C7B550E8-D2A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FredDevelopmentKit", "src\FredDevelopmentKit\FredDevelopmentKit.csproj", "{1E593553-D4FF-4CE4-96A2-BC7B74F0751A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FredDKSample", "src\FredDKSample\FredDKSample.csproj", "{8B0075AA-9E20-4798-9716-C95EE87D5B6F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FredDKSample", "src\FredDKSample\FredDKSample.csproj", "{8B0075AA-9E20-4798-9716-C95EE87D5B6F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

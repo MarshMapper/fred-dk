@@ -5,13 +5,12 @@ namespace FredDevelopmentKit.Services
 {
     public class FredCategoryService : IFredCategoryService
     {
-        private readonly HttpClient _httpClient;
+        private readonly FredHttpClient _fredClient;
         private string _apiKey = "";
 
-        public FredCategoryService(HttpClient httpClient)
+        public FredCategoryService(FredHttpClient fredClient)
         {
-            _httpClient = httpClient;
-            _httpClient.BaseAddress = new Uri("https://api.stlouisfed.org/fred/");
+            _fredClient = fredClient;
         }
         public void SetApiKey(string apiKey)
         {
@@ -21,7 +20,7 @@ namespace FredDevelopmentKit.Services
         public async Task<List<Category>?> GetChildCategories(int categoryId)
         {
             string childCategoriesUrl = $"category/children?category_id={categoryId}&api_key={_apiKey}&file_type=json";
-            CategoryResponseDto? categoryResponse = await _httpClient.GetFromJsonAsync<CategoryResponseDto?>(childCategoriesUrl);
+            CategoryResponseDto? categoryResponse = await _fredClient.GetFromJsonAsync<CategoryResponseDto?>(childCategoriesUrl);
             if (categoryResponse == null || categoryResponse.Categories == null || categoryResponse.Categories.Count == 0)
             {
                 return null;
@@ -35,7 +34,7 @@ namespace FredDevelopmentKit.Services
         public async Task<Category?> GetCategory(int categoryId)
         {
             string categoryUrl = $"category?category_id={categoryId}&api_key={_apiKey}&file_type=json";
-            CategoryResponseDto? categoryResponse = await _httpClient.GetFromJsonAsync<CategoryResponseDto?>(categoryUrl);
+            CategoryResponseDto? categoryResponse = await _fredClient.GetFromJsonAsync<CategoryResponseDto?>(categoryUrl);
             if (categoryResponse == null || categoryResponse.Categories == null || categoryResponse.Categories.Count == 0)
             {
                 return null;

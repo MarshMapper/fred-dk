@@ -15,9 +15,7 @@ namespace FredDKSample
 
             builder.ConfigureServices(services =>
             {
-                services.AddSingleton<IFredCategoryService, FredCategoryService>();
-
-                services.AddHttpClient<FredCategoryService>()
+                services.AddHttpClient<FredHttpClient>()
                     .ConfigurePrimaryHttpMessageHandler(() =>
                     {
                         // set up pooling to allow long-lived HttpClients while avoiding DNS caching issues
@@ -29,12 +27,14 @@ namespace FredDKSample
                     })
                     // disable recycling, handled by pooling configured above
                     .SetHandlerLifetime(Timeout.InfiniteTimeSpan);
+
+                services.AddSingleton<IFredCategoryService, FredCategoryService>();
             });
 
             var services = builder.Build().Services;
             IConfiguration? configuration = services.GetService<IConfiguration>();
 
-            var categoryService = services.GetService<FredCategoryService>();
+            var categoryService = services.GetService<IFredCategoryService>();
             if (categoryService != null && configuration != null)
             {
                 FredClientOptions fredClientOptions = new FredClientOptions();
@@ -44,7 +44,7 @@ namespace FredDKSample
 
             await GetSampleData(categoryService);
         }
-        public static async Task GetSampleData(FredCategoryService? categoryService)
+        public static async Task GetSampleData(IFredCategoryService? categoryService)
         {
             Category? category = null;
             if (categoryService != null)

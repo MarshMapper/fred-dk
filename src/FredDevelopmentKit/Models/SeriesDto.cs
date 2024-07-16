@@ -1,7 +1,7 @@
 ﻿namespace FredDevelopmentKit.Models
 {
     // one of the series returned from the category/series endpoint
-    public class CategorySeriesDto
+    public class SeriesDto
     {
         public string Id { get; set; }
         public string RealtimeStart { get; set; }

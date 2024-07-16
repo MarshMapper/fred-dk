@@ -1,26 +1,16 @@
 ﻿using Ardalis.Result;
 using FredDevelopmentKit.Models;
-using System.Net.Http.Json;
 
 namespace FredDevelopmentKit.Services
 {
-    public class FredCategoryService : IFredCategoryService
+    public class FredCategoryService : FredService, IFredCategoryService
     {
-        private readonly FredHttpClient _fredClient;
-        private string _apiKey = "";
-
-        public FredCategoryService(FredHttpClient fredClient)
+        public FredCategoryService(FredHttpClient fredClient) : base(fredClient)
         {
-            _fredClient = fredClient;
         }
-        public void SetApiKey(string apiKey)
-        {
-            this._apiKey = apiKey;
-        }
-
         public async Task<Result<Category>> GetCategory(int categoryId)
         {
-            string categoryUrl = $"category?category_id={categoryId}&api_key={_apiKey}&file_type=json";
+            string categoryUrl = $"category?category_id={categoryId}&{GetCommonUrlSegments()}";
             Result<CategoryResponseDto> result = await _fredClient.GetFromJsonAsync<CategoryResponseDto>(categoryUrl);
             if (result.IsSuccess)
             {
@@ -41,7 +31,7 @@ namespace FredDevelopmentKit.Services
         }
         public async Task<Result<List<Category>>> GetChildCategories(int categoryId)
         {
-            string childCategoriesUrl = $"category/children?category_id={categoryId}&api_key={_apiKey}&file_type=json";
+            string childCategoriesUrl = $"category/children?category_id={categoryId}&{GetCommonUrlSegments()}";
             Result<CategoryResponseDto> result = await _fredClient.GetFromJsonAsync<CategoryResponseDto>(childCategoriesUrl);
             if (result.IsSuccess)
             {
@@ -62,7 +52,7 @@ namespace FredDevelopmentKit.Services
         }
         public async Task<Result<List<Category>>> GetRelatedCategories(int categoryId)
         {
-            string relatedCategoriesUrl = $"category/related?category_id={categoryId}&api_key={_apiKey}&file_type=json";
+            string relatedCategoriesUrl = $"category/related?category_id={categoryId}&{GetCommonUrlSegments()}";
             Result<CategoryResponseDto> result = await _fredClient.GetFromJsonAsync<CategoryResponseDto>(relatedCategoriesUrl);
             if (result.IsSuccess)
             {
@@ -81,25 +71,25 @@ namespace FredDevelopmentKit.Services
                 return Result.NotFound();
             }
         }
-        public async Task<Result<CategorySeriesResponseDto>> GetSeries(int categoryId)
+        public async Task<Result<SeriesResponseDto>> GetSeries(int categoryId)
         {
-            string childCategoriesUrl = $"category/series?category_id={categoryId}&api_key={_apiKey}&file_type=json";
-            return await _fredClient.GetFromJsonAsync<CategorySeriesResponseDto>(childCategoriesUrl);
+            string seriesUrl = $"category/series?category_id={categoryId}&{GetCommonUrlSegments()}";
+            return await _fredClient.GetFromJsonAsync<SeriesResponseDto>(seriesUrl);
         }
-        public async Task<Result<CategoryTagsResponseDto>> GetTags(int categoryId)
+        public async Task<Result<TagsResponseDto>> GetTags(int categoryId)
         {
-            string childCategoriesUrl = $"category/tags?category_id={categoryId}&api_key={_apiKey}&file_type=json";
-            return await _fredClient.GetFromJsonAsync<CategoryTagsResponseDto>(childCategoriesUrl);
+            string tagsUrl = $"category/tags?category_id={categoryId}&{GetCommonUrlSegments()}";
+            return await _fredClient.GetFromJsonAsync<TagsResponseDto>(tagsUrl);
         }
-        public async Task<Result<CategoryTagsResponseDto>> GetRelatedTags(int categoryId, List<string> searchTagNames)
+        public async Task<Result<TagsResponseDto>> GetRelatedTags(int categoryId, List<string> searchTagNames)
         {
-            string childCategoriesUrl = $"category/related_tags?category_id={categoryId}&api_key={_apiKey}&file_type=json";
+            string tagsUrl = $"category/related_tags?category_id={categoryId}&{GetCommonUrlSegments()}";
             if (searchTagNames != null && searchTagNames.Count > 0)
             {
-                childCategoriesUrl += "&tag_names=" + String.Join(';', searchTagNames);
+                tagsUrl += "&tag_names=" + String.Join(';', searchTagNames);
             }
 
-            return await _fredClient.GetFromJsonAsync<CategoryTagsResponseDto>(childCategoriesUrl);
+            return await _fredClient.GetFromJsonAsync<TagsResponseDto>(tagsUrl);
         }
     }
 }

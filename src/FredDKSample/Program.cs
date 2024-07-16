@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
+using Ardalis.Result;
 using FredDevelopmentKit.Models;
 using FredDevelopmentKit.Services;
 using FredDevelopmentKit.Configuration;
@@ -46,29 +47,29 @@ namespace FredDKSample
         }
         public static async Task GetSampleData(IFredCategoryService? categoryService)
         {
-            Category? category = null;
+            Result<Category> categoryResult;
 
             if (categoryService == null)
             {
                 return;
             }
-            category = await categoryService.GetCategory(18);
+            categoryResult = await categoryService.GetCategory(18);
 
-            if (category != null)
+            if (categoryResult.IsSuccess)
             {
-                Console.WriteLine($"Category name is {category.Name} id is {category.Id}");
+                Console.WriteLine($"Category name is {categoryResult.Value.Name} id is {categoryResult.Value.Id}");
             }
             else
             {
                 Console.WriteLine("Category not found");
             }
 
-            List<Category>? categories = null;
-            categories = await categoryService.GetChildCategories(32992);
+            Result<List<Category>> categoriesResult;
+            categoriesResult = await categoryService.GetChildCategories(32992);
 
-            if (categories != null)
+            if (categoriesResult.IsSuccess)
             {
-                foreach (Category c in categories)
+                foreach (Category c in categoriesResult.Value)
                 {
                     Console.WriteLine($"Child category name is {c.Name} id is {c.Id}");
                 }
@@ -77,11 +78,11 @@ namespace FredDKSample
             {
                 Console.WriteLine("No child categories found");
             }
-            categories = await categoryService.GetRelatedCategories(32073);
-            
-            if (categories != null)
+            categoriesResult = await categoryService.GetRelatedCategories(32073);
+
+            if (categoriesResult.IsSuccess)
             {
-                foreach (Category c in categories)
+                foreach (Category c in categoriesResult.Value)
                 {
                     Console.WriteLine($"Related category name is {c.Name} id is {c.Id}");
                 }
@@ -91,10 +92,10 @@ namespace FredDKSample
                 Console.WriteLine("No related categories found");
             }
 
-            CategorySeriesResponseDto? series = await categoryService.GetSeries(32992);
-            if (series != null)
+            Result<CategorySeriesResponseDto> seriesResult = await categoryService.GetSeries(32992);
+            if (seriesResult.IsSuccess)
             {
-                foreach (CategorySeriesDto s in series.Series)
+                foreach (CategorySeriesDto s in seriesResult.Value.Series)
                 {
                     Console.WriteLine($"Series name is {s.Title} id is {s.Id}");
                 }
@@ -103,10 +104,10 @@ namespace FredDKSample
             {
                 Console.WriteLine("No series found");
             }
-            CategoryTagsResponseDto? tags = await categoryService.GetTags(32992);
-            if (tags != null)
+            Result<CategoryTagsResponseDto> tagsResult = await categoryService.GetTags(32992);
+            if (tagsResult.IsSuccess)
             {
-                foreach (CategoryTagDto t in tags.Tags)
+                foreach (CategoryTagDto t in tagsResult.Value.Tags)
                 {
                     Console.WriteLine($"Tag name is {t.Name} Group id is {t.GroupId}");
                 }
@@ -115,10 +116,10 @@ namespace FredDKSample
             {
                 Console.WriteLine("No tags found");
             }
-            tags = await categoryService.GetRelatedTags(125, new List<string> { "services", "quarterly" });
-            if (tags != null)
+            tagsResult = await categoryService.GetRelatedTags(125, new List<string> { "services", "quarterly" });
+            if (tagsResult.IsSuccess)
             {
-                foreach (CategoryTagDto t in tags.Tags)
+                foreach (CategoryTagDto t in tagsResult.Value.Tags)
                 {
                     Console.WriteLine($"Tag name is {t.Name} Group id is {t.GroupId}");
                 }

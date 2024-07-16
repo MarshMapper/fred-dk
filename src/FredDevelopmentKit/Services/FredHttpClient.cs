@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace FredDevelopmentKit.Services
@@ -18,7 +19,12 @@ namespace FredDevelopmentKit.Services
         }
         public async Task<T?> GetFromJsonAsync<T>(string url)
         {
-            return await _httpClient.GetFromJsonAsync<T?>(url);
+            var options = new JsonSerializerOptions
+            {
+                // tell serializer response properties are in snake_case so they can be mapped to C# properties
+                PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower
+            };
+            return await _httpClient.GetFromJsonAsync<T?>(url, options);
         }
     }
 }

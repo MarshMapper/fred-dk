@@ -47,10 +47,13 @@ namespace FredDKSample
         public static async Task GetSampleData(IFredCategoryService? categoryService)
         {
             Category? category = null;
-            if (categoryService != null)
+
+            if (categoryService == null)
             {
-                category = await categoryService.GetCategory(18);
+                return;
             }
+            category = await categoryService.GetCategory(18);
+
             if (category != null)
             {
                 Console.WriteLine($"Category name is {category.Name} id is {category.Id}");
@@ -61,20 +64,68 @@ namespace FredDKSample
             }
 
             List<Category>? categories = null;
-            if (categoryService != null)
-            {
-                categories = await categoryService.GetChildCategories(32992);
-            }
+            categories = await categoryService.GetChildCategories(32992);
+
             if (categories != null)
             {
                 foreach (Category c in categories)
                 {
-                    Console.WriteLine($"Category name is {c.Name} id is {c.Id}");
+                    Console.WriteLine($"Child category name is {c.Name} id is {c.Id}");
                 }
             }
             else
             {
                 Console.WriteLine("No child categories found");
+            }
+            categories = await categoryService.GetRelatedCategories(32073);
+            
+            if (categories != null)
+            {
+                foreach (Category c in categories)
+                {
+                    Console.WriteLine($"Related category name is {c.Name} id is {c.Id}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("No related categories found");
+            }
+
+            CategorySeriesResponseDto? series = await categoryService.GetSeries(32992);
+            if (series != null)
+            {
+                foreach (CategorySeriesDto s in series.Series)
+                {
+                    Console.WriteLine($"Series name is {s.Title} id is {s.Id}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("No series found");
+            }
+            CategoryTagsResponseDto? tags = await categoryService.GetTags(32992);
+            if (tags != null)
+            {
+                foreach (CategoryTagDto t in tags.Tags)
+                {
+                    Console.WriteLine($"Tag name is {t.Name} Group id is {t.GroupId}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("No tags found");
+            }
+            tags = await categoryService.GetRelatedTags(125, new List<string> { "services", "quarterly" });
+            if (tags != null)
+            {
+                foreach (CategoryTagDto t in tags.Tags)
+                {
+                    Console.WriteLine($"Tag name is {t.Name} Group id is {t.GroupId}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("No tags found");
             }
         }
     }

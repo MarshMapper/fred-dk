@@ -1,9 +1,7 @@
-﻿using System.Text.Json.Serialization;
-
+﻿
 namespace FredDevelopmentKit.Models
 {
-    // response from the category/tags and category/related_tags endpoint
-    public class CategoryTagsResponseDto
+    public class CommonResponseDto
     {
         public string RealtimeStart { get; set; }
         public string RealtimeEnd { get; set; }
@@ -12,7 +10,5 @@ namespace FredDevelopmentKit.Models
         public int Count { get; set; }
         public int Offset { get; set; }
         public int Limit { get; set; }
-        [JsonPropertyName("tags")]
-        public List<CategoryTagDto> Tags { get; set; }
     }
 }

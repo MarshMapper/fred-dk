@@ -92,10 +92,10 @@ namespace FredDKSample
                 Console.WriteLine("No related categories found");
             }
 
-            Result<CategorySeriesResponseDto> seriesResult = await categoryService.GetSeries(32992);
+            Result<SeriesResponseDto> seriesResult = await categoryService.GetSeries(32992);
             if (seriesResult.IsSuccess)
             {
-                foreach (CategorySeriesDto s in seriesResult.Value.Series)
+                foreach (SeriesDto s in seriesResult.Value.Series)
                 {
                     Console.WriteLine($"Series name is {s.Title} id is {s.Id}");
                 }
@@ -104,10 +104,10 @@ namespace FredDKSample
             {
                 Console.WriteLine("No series found");
             }
-            Result<CategoryTagsResponseDto> tagsResult = await categoryService.GetTags(32992);
+            Result<TagsResponseDto> tagsResult = await categoryService.GetTags(32992);
             if (tagsResult.IsSuccess)
             {
-                foreach (CategoryTagDto t in tagsResult.Value.Tags)
+                foreach (TagDto t in tagsResult.Value.Tags)
                 {
                     Console.WriteLine($"Tag name is {t.Name} Group id is {t.GroupId}");
                 }
@@ -119,7 +119,7 @@ namespace FredDKSample
             tagsResult = await categoryService.GetRelatedTags(125, new List<string> { "services", "quarterly" });
             if (tagsResult.IsSuccess)
             {
-                foreach (CategoryTagDto t in tagsResult.Value.Tags)
+                foreach (TagDto t in tagsResult.Value.Tags)
                 {
                     Console.WriteLine($"Tag name is {t.Name} Group id is {t.GroupId}");
                 }

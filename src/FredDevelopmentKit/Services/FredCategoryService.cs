@@ -71,10 +71,10 @@ namespace FredDevelopmentKit.Services
                 return Result.NotFound();
             }
         }
-        public async Task<Result<SeriesResponseDto>> GetSeries(int categoryId)
+        public async Task<Result<RelatedSeriesResponseDto>> GetSeries(int categoryId)
         {
             string seriesUrl = $"category/series?category_id={categoryId}&{GetCommonUrlSegments()}";
-            return await _fredClient.GetFromJsonAsync<SeriesResponseDto>(seriesUrl);
+            return await _fredClient.GetFromJsonAsync<RelatedSeriesResponseDto>(seriesUrl);
         }
         public async Task<Result<TagsResponseDto>> GetTags(int categoryId)
         {

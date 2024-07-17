@@ -31,6 +31,7 @@ namespace FredDKSample
 
                 services.AddSingleton<IFredCategoryService, FredCategoryService>();
                 services.AddSingleton<IFredReleaseService, FredReleaseService>();
+                services.AddSingleton<IFredSeriesService, FredSeriesService>();
             });
 
             var services = builder.Build().Services;
@@ -43,20 +44,24 @@ namespace FredDKSample
 
             var categoryService = services.GetService<IFredCategoryService>();
             var releaseService = services.GetService<IFredReleaseService>();
+            var seriesService = services.GetService<IFredSeriesService>();
 
-            if (categoryService != null && releaseService != null)
+            if (categoryService != null && releaseService != null && seriesService != null)
             {
                 categoryService.SetApiKey(fredClientOptions.ApiKey);
                 releaseService.SetApiKey(fredClientOptions.ApiKey);
+                seriesService.SetApiKey(fredClientOptions.ApiKey);
             }
 
-            await GetSampleData(categoryService, releaseService);
+            await GetSampleData(categoryService, releaseService, seriesService);
         }
         public static async Task GetSampleData(IFredCategoryService? categoryService, 
-            IFredReleaseService? releaseService)
+            IFredReleaseService? releaseService,
+            IFredSeriesService? seriesService)
         {
             await GetSampleCategoryData(categoryService);
             await GetSampleReleasesData(releaseService);
+            await GetSampleSeriesData(seriesService);
         }
         public static async Task GetSampleCategoryData(IFredCategoryService? categoryService)
         {
@@ -105,7 +110,7 @@ namespace FredDKSample
                 Console.WriteLine("No related categories found");
             }
 
-            Result<SeriesResponseDto> seriesResult = await categoryService.GetSeries(32992);
+            Result<RelatedSeriesResponseDto> seriesResult = await categoryService.GetSeries(32992);
             if (seriesResult.IsSuccess)
             {
                 foreach (SeriesDto s in seriesResult.Value.Series)
@@ -193,7 +198,7 @@ namespace FredDKSample
             {
                 Console.WriteLine("Release dates not found");
             }
-            Result<SeriesResponseDto> seriesResult = await releaseService.GetSeries(19);
+            Result<RelatedSeriesResponseDto> seriesResult = await releaseService.GetSeries(19);
             if (seriesResult.IsSuccess)
             {
                 foreach (SeriesDto series in seriesResult.Value.Series)
@@ -240,6 +245,127 @@ namespace FredDKSample
             else
             {
                 Console.WriteLine("No tags found");
+            }
+        }
+        public static async Task GetSampleSeriesData(IFredSeriesService? seriesService)
+        {
+            if (seriesService == null)
+            {
+                return;
+            }
+            Result<SeriesDto> seriesResult = await seriesService.GetSeries("GNPCA");
+            if (seriesResult.IsSuccess)
+            {
+                Console.WriteLine($"Series name is {seriesResult.Value.Title} id is {seriesResult.Value.Id}");
+            }
+            else
+            {
+                Console.WriteLine("Series not found");
+            }
+            Result<CategoryResponseDto> categoriesResult = await seriesService.GetCategories("GNPCA");
+            if (categoriesResult.IsSuccess)
+            {
+                foreach (Category category in categoriesResult.Value.Categories)
+                {
+                    Console.WriteLine($"Category name is {category.Name} id is {category.Id}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("No categories found");
+            }
+            Result<ObservationsResponseDto> observationsResult = await seriesService.GetObservations("GNPCA");
+            if (observationsResult.IsSuccess)
+            {
+                foreach (ObservationDto observation in observationsResult.Value.Observations)
+                {
+                    Console.WriteLine($"Observation date is {observation.Date} value is {observation.Value}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("No observations found");
+            }
+            Result<Release> releaseResult = await seriesService.GetRelease("GNPCA");
+            if (releaseResult.IsSuccess)
+            {
+                Console.WriteLine($"Release name is {releaseResult.Value.Name} id is {releaseResult.Value.Id}");
+            }
+            else
+            {
+                Console.WriteLine("Release not found");
+            }
+            Result<SeriesResponseDto> searchResult = await seriesService.SearchSeries("monetary+service+index");
+            if (searchResult.IsSuccess)
+            {
+                foreach (SeriesDto series in searchResult.Value.Series)
+                {
+                    Console.WriteLine($"Series name is {series.Title} id is {series.Id}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("No series found");
+            }
+            Result<TagsResponseDto> searchTagsResult = await seriesService.SearchSeriesTags("monetary+service+index");
+            if (searchTagsResult.IsSuccess)
+            {
+                foreach (TagDto tag in searchTagsResult.Value.Tags)
+                {
+                    Console.WriteLine($"Tag name is {tag.Name} Group id is {tag.GroupId}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("No tags found");
+            }
+            Result<TagsResponseDto> searchRelatedTagsResult = await seriesService.SearchSeriesRelatedTags("monetary+service+index");
+            if (searchRelatedTagsResult.IsSuccess)
+            {
+                foreach (TagDto tag in searchRelatedTagsResult.Value.Tags)
+                {
+                    Console.WriteLine($"Tag name is {tag.Name} Group id is {tag.GroupId}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("No tags found");
+            }
+            Result<TagsResponseDto> tagsResult = await seriesService.GetTags("GNPCA");
+            if (tagsResult.IsSuccess)
+            {
+                foreach (TagDto tag in tagsResult.Value.Tags)
+                {
+                    Console.WriteLine($"Tag name is {tag.Name} Group id is {tag.GroupId}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("No tags found");
+            }
+            Result<UpdateResponseDto> updatesResult = await seriesService.GetSeriesUpdates();
+            if (updatesResult.IsSuccess)
+            {
+                foreach (SeriesDto series in updatesResult.Value.Series)
+                {
+                    Console.WriteLine($"Update name is {series.Title} id is {series.Id}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("No updates found");
+            }
+            Result<VintageDatesResponseDto> vintageDatesResult = await seriesService.GetVintageDates("GNPCA");
+            if (vintageDatesResult.IsSuccess)
+            {
+                foreach (string vintageDate in vintageDatesResult.Value.VintageDates)
+                {
+                    Console.WriteLine($"Vintage date is {vintageDate}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("No vintage dates found");
             }
         }
     }

@@ -7,12 +7,12 @@ namespace FredDevelopmentKit.Services
     {
         Task<Result<ReleaseResponseDto>> GetReleases();
         Task<Result<ReleasesDatesResponseDto>> GetReleasesDates(); 
-        Task<Result<Release>> GetRelease(int ReleaseId);
-        Task<Result<ReleaseDateResponseDto>> GetReleaseDates(int ReleaseId);
-        Task<Result<SeriesResponseDto>> GetSeries(int ReleaseId);
-        Task<Result<SourcesResponseDto>> GetSources(int ReleaseId);
-        Task<Result<TagsResponseDto>> GetTags(int ReleaseId);
-        Task<Result<TagsResponseDto>> GetRelatedTags(int ReleaseId, List<string> searchTagNames);
+        Task<Result<Release>> GetRelease(int releaseId);
+        Task<Result<ReleaseDateResponseDto>> GetReleaseDates(int releaseId);
+        Task<Result<RelatedSeriesResponseDto>> GetSeries(int releaseId);
+        Task<Result<SourcesResponseDto>> GetSources(int releaseId);
+        Task<Result<TagsResponseDto>> GetTags(int releaseId);
+        Task<Result<TagsResponseDto>> GetRelatedTags(int releaseId, List<string> searchTagNames);
         void SetApiKey(string apiKey);
     }
 }

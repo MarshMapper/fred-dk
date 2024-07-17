@@ -2,11 +2,8 @@
 
 namespace FredDevelopmentKit.Models
 {
-    // response from the category/series endpoint
-    public class SeriesResponseDto 
+    public class UpdateResponseDto : CommonResponseDto
     {
-        public string RealtimeStart { get; set; }
-        public string RealtimeEnd { get; set; }
         [JsonPropertyName("seriess")]
         public List<SeriesDto> Series { get; set; }
     }

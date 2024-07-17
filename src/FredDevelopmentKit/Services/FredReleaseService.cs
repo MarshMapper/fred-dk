@@ -45,10 +45,10 @@ namespace FredDevelopmentKit.Services
             string releaseDatesUrl = $"release/dates?{GetCommonUrlSegments()}";
             return await _fredClient.GetFromJsonAsync<ReleaseDateResponseDto>(releaseDatesUrl);
         }
-        public async Task<Result<SeriesResponseDto>> GetSeries(int releaseId)
+        public async Task<Result<RelatedSeriesResponseDto>> GetSeries(int releaseId)
         {
             string seriesUrl = $"release/series?release_id={releaseId}&{GetCommonUrlSegments()}";
-            return await _fredClient.GetFromJsonAsync<SeriesResponseDto>(seriesUrl);
+            return await _fredClient.GetFromJsonAsync<RelatedSeriesResponseDto>(seriesUrl);
         }
         public async Task<Result<SourcesResponseDto>> GetSources(int releaseId)
         {

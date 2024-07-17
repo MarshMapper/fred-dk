@@ -1,6 +1,6 @@
 ﻿namespace FredDevelopmentKit.Models
 {
-    // one of the series returned from the category/series endpoint
+    // one econmic series
     public class SeriesDto
     {
         public string Id { get; set; }

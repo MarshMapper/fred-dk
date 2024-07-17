@@ -30,22 +30,35 @@ namespace FredDKSample
                     .SetHandlerLifetime(Timeout.InfiniteTimeSpan);
 
                 services.AddSingleton<IFredCategoryService, FredCategoryService>();
+                services.AddSingleton<IFredReleaseService, FredReleaseService>();
             });
 
             var services = builder.Build().Services;
             IConfiguration? configuration = services.GetService<IConfiguration>();
-
-            var categoryService = services.GetService<IFredCategoryService>();
-            if (categoryService != null && configuration != null)
+            FredClientOptions fredClientOptions = new FredClientOptions();
+            if (configuration != null)
             {
-                FredClientOptions fredClientOptions = new FredClientOptions();
                 configuration.GetSection(FredClientOptions.FredClient).Bind(fredClientOptions);
-                categoryService.SetApiKey(fredClientOptions.ApiKey);
             }
 
-            await GetSampleData(categoryService);
+            var categoryService = services.GetService<IFredCategoryService>();
+            var releaseService = services.GetService<IFredReleaseService>();
+
+            if (categoryService != null && releaseService != null)
+            {
+                categoryService.SetApiKey(fredClientOptions.ApiKey);
+                releaseService.SetApiKey(fredClientOptions.ApiKey);
+            }
+
+            await GetSampleData(categoryService, releaseService);
         }
-        public static async Task GetSampleData(IFredCategoryService? categoryService)
+        public static async Task GetSampleData(IFredCategoryService? categoryService, 
+            IFredReleaseService? releaseService)
+        {
+            await GetSampleCategoryData(categoryService);
+            await GetSampleReleasesData(releaseService);
+        }
+        public static async Task GetSampleCategoryData(IFredCategoryService? categoryService)
         {
             Result<Category> categoryResult;
 
@@ -122,6 +135,106 @@ namespace FredDKSample
                 foreach (TagDto t in tagsResult.Value.Tags)
                 {
                     Console.WriteLine($"Tag name is {t.Name} Group id is {t.GroupId}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("No tags found");
+            }
+        }
+        public static async Task GetSampleReleasesData(IFredReleaseService? releaseService)
+        {
+            if (releaseService == null)
+            {
+                return;
+            }
+            Result<ReleaseResponseDto> releasesResult = await releaseService.GetReleases();
+            if (releasesResult.IsSuccess)
+            {
+                foreach (Release release in releasesResult.Value.Releases)
+                {
+                    Console.WriteLine($"Release name is {release.Name} id is {release.Id}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Releases not found");
+            }
+            Result<ReleasesDatesResponseDto> releasesDatesResult = await releaseService.GetReleasesDates();
+            if (releasesDatesResult.IsSuccess)
+            {
+                foreach (ReleasesDate releaseDate in releasesDatesResult.Value.ReleaseDates)
+                {
+                    Console.WriteLine($"Release date is {releaseDate.Date} id is {releaseDate.ReleaseId}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Releases dates not found");
+            }
+            Result<Release> releaseResult = await releaseService.GetRelease(19);
+            if (releaseResult.IsSuccess)
+            {
+                Console.WriteLine($"Release name is {releaseResult.Value.Name} id is {releaseResult.Value.Id}");
+            }
+            else
+            {
+                Console.WriteLine("Release not found");
+            }
+            Result<ReleaseDateResponseDto> releaseDatesResult = await releaseService.GetReleaseDates(19);
+            if (releaseDatesResult.IsSuccess)
+            {
+                foreach (ReleaseDate releaseDate in releaseDatesResult.Value.ReleaseDates)
+                {
+                    Console.WriteLine($"Release date is {releaseDate.Date} id is {releaseDate.ReleaseId}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Release dates not found");
+            }
+            Result<SeriesResponseDto> seriesResult = await releaseService.GetSeries(19);
+            if (seriesResult.IsSuccess)
+            {
+                foreach (SeriesDto series in seriesResult.Value.Series)
+                {
+                    Console.WriteLine($"Series name is {series.Title} id is {series.Id}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("No series found");
+            }
+            Result<SourcesResponseDto> sourcesResult = await releaseService.GetSources(19);
+            if (sourcesResult.IsSuccess)
+            {
+                foreach (SourceDto source in sourcesResult.Value.Sources)
+                {
+                    Console.WriteLine($"Source name is {source.Name} id is {source.Id}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("No sources found");
+            }
+            Result<TagsResponseDto> tagsResult = await releaseService.GetTags(86);
+            if (tagsResult.IsSuccess)
+            {
+                foreach (TagDto tag in tagsResult.Value.Tags)
+                {
+                    Console.WriteLine($"Tag name is {tag.Name} Group id is {tag.GroupId}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("No tags found");
+            }
+            tagsResult = await releaseService.GetRelatedTags(125, new List<string> { "services", "quarterly" });
+            if (tagsResult.IsSuccess)
+            {
+                foreach (TagDto tag in tagsResult.Value.Tags)
+                {
+                    Console.WriteLine($"Tag name is {tag.Name} Group id is {tag.GroupId}");
                 }
             }
             else

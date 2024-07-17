@@ -8,9 +8,9 @@ namespace FredDevelopmentKit.Services
         public FredReleaseService(FredHttpClient fredClient) : base(fredClient)
         {
         }
-        public async Task<Result<ReleaseResponseDto>> GetReleases(int releaseId)
+        public async Task<Result<ReleaseResponseDto>> GetReleases()
         {             
-            string releaseUrl = $"releases?release_id={releaseId}&{GetCommonUrlSegments()}";
+            string releaseUrl = $"releases?{GetCommonUrlSegments()}";
             return await _fredClient.GetFromJsonAsync<ReleaseResponseDto>(releaseUrl);
         }
         public async Task<Result<ReleasesDatesResponseDto>> GetReleasesDates()
@@ -58,12 +58,12 @@ namespace FredDevelopmentKit.Services
 
         public async Task<Result<TagsResponseDto>> GetTags(int releaseId)
         {
-            string tagsUrl = $"Release/tags?release_id={releaseId}&{GetCommonUrlSegments()}";
+            string tagsUrl = $"release/tags?release_id={releaseId}&{GetCommonUrlSegments()}";
             return await _fredClient.GetFromJsonAsync<TagsResponseDto>(tagsUrl);
         }
         public async Task<Result<TagsResponseDto>> GetRelatedTags(int releaseId, List<string> searchTagNames)
         {
-            string tagsUrl = $"Release/related_tags?release_id={releaseId}&{GetCommonUrlSegments()}";
+            string tagsUrl = $"release/related_tags?release_id={releaseId}&{GetCommonUrlSegments()}";
             if (searchTagNames != null && searchTagNames.Count > 0)
             {
                 tagsUrl += "&tag_names=" + String.Join(';', searchTagNames);

@@ -1,11 +1,14 @@
 ﻿using Ardalis.Result;
+using FredDevelopmentKit.Configuration;
 using FredDevelopmentKit.Models;
+using Microsoft.Extensions.Options;
 
 namespace FredDevelopmentKit.Services
 {
     public class FredReleaseService : FredService, IFredReleaseService
     {
-        public FredReleaseService(FredHttpClient fredClient) : base(fredClient)
+        public FredReleaseService(FredHttpClient fredClient, IOptions<FredClientOptions> options) : 
+            base(fredClient, options)
         {
         }
         public async Task<Result<ReleaseResponseDto>> GetReleases()

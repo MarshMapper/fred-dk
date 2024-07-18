@@ -1,11 +1,14 @@
 ﻿using Ardalis.Result;
+using FredDevelopmentKit.Configuration;
 using FredDevelopmentKit.Models;
+using Microsoft.Extensions.Options;
 
 namespace FredDevelopmentKit.Services
 {
     public class FredCategoryService : FredService, IFredCategoryService
     {
-        public FredCategoryService(FredHttpClient fredClient) : base(fredClient)
+        public FredCategoryService(FredHttpClient fredClient, IOptions<FredClientOptions> options) : 
+            base(fredClient, options)
         {
         }
         public async Task<Result<Category>> GetCategory(int categoryId)

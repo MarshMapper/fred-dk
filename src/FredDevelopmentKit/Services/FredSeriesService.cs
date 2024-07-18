@@ -1,11 +1,14 @@
 ﻿using Ardalis.Result;
+using FredDevelopmentKit.Configuration;
 using FredDevelopmentKit.Models;
+using Microsoft.Extensions.Options;
 
 namespace FredDevelopmentKit.Services
 {
     public class FredSeriesService : FredService, IFredSeriesService
     {
-        public FredSeriesService(FredHttpClient fredClient) : base(fredClient)
+        public FredSeriesService(FredHttpClient fredClient, IOptions<FredClientOptions> options) : 
+            base(fredClient, options)
         {
         }
         public async Task<Result<SeriesDto>> GetSeries(string seriesId)

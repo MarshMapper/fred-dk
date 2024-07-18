@@ -11,6 +11,5 @@ namespace FredDevelopmentKit.Services
         Task<Result<RelatedSeriesResponseDto>> GetSeries(int categoryId);
         Task<Result<TagsResponseDto>> GetTags(int categoryId);
         Task<Result<TagsResponseDto>> GetRelatedTags(int categoryId, List<string> searchTagNames);
-        void SetApiKey(string apiKey);
     }
 }

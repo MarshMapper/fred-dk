@@ -1,4 +1,7 @@
 ﻿
+using FredDevelopmentKit.Configuration;
+using Microsoft.Extensions.Options;
+
 namespace FredDevelopmentKit.Services
 {
     public class FredService
@@ -6,13 +9,10 @@ namespace FredDevelopmentKit.Services
         protected readonly FredHttpClient _fredClient;
         private string _apiKey = "";
 
-        public FredService(FredHttpClient fredClient)
+        public FredService(FredHttpClient fredClient, IOptions<FredClientOptions> options)
         {
             _fredClient = fredClient;
-        }
-        public void SetApiKey(string apiKey)
-        {
-            this._apiKey = apiKey;
+            _apiKey = options.Value.ApiKey;
         }
         public string GetApiUrlSegment()
         {

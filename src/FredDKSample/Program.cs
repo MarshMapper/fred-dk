@@ -14,28 +14,27 @@ namespace FredDKSample
             // for this console example, we'll use singleton services
             builder.AddSingletonFredServices();
 
-            var services = builder.Build().Services;
-
+            await GetSampleData(builder.Build().Services);
+         }
+        public static async Task GetSampleData(IServiceProvider services)
+        {
             var categoryService = services.GetService<IFredCategoryService>();
             var releaseService = services.GetService<IFredReleaseService>();
             var seriesService = services.GetService<IFredSeriesService>();
+            var sourceService = services.GetService<IFredSourceService>();
 
-            if (categoryService != null && releaseService != null && seriesService != null)
+            if (categoryService != null && releaseService != null && 
+                seriesService != null && sourceService != null)
             {
-                await GetSampleData(categoryService, releaseService, seriesService);
+                await CategoryExample.GetSampleCategoryData(categoryService);
+                await ReleasesExample.GetSampleReleasesData(releaseService);
+                await SeriesExample.GetSampleSeriesData(seriesService);
+                await SourceExample.GetSampleSourceData(sourceService);
             }
             else
             {
                 Console.WriteLine("Failed to get services");
             }
-        }
-        public static async Task GetSampleData(IFredCategoryService? categoryService,
-            IFredReleaseService? releaseService,
-            IFredSeriesService? seriesService)
-        {
-            await CategoryExample.GetSampleCategoryData(categoryService);
-            await ReleasesExample.GetSampleReleasesData(releaseService);
-            await SeriesExample.GetSampleSeriesData(seriesService);
         }
     }
 }

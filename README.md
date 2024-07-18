@@ -6,8 +6,8 @@ Data (FRED) web site:
 [https://fred.stlouisfed.org/](https://fred.stlouisfed.org/)   
 [https://fred.stlouisfed.org/docs/api/fred/](https://fred.stlouisfed.org/docs/api/fred/)
 
-The current version provides partial support for the Categories API.  Services for the
-Series and Releases APIs will be prioritzed based on their usefulness.
+The current version provides support for all endpoints on the Categories, Series and Releases APIs
+except release/tables endpoint that is a special case.  
 
 ## Using
 

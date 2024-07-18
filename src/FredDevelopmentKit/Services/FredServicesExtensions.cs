@@ -26,6 +26,7 @@ namespace FredDevelopmentKit.Services
                 services.AddSingleton<IFredCategoryService, FredCategoryService>();
                 services.AddSingleton<IFredReleaseService, FredReleaseService>();
                 services.AddSingleton<IFredSeriesService, FredSeriesService>();
+                services.AddSingleton<IFredSourceService, FredSourceService>();
                 services.Configure<FredClientOptions>(
                     hostContext.Configuration.GetSection($"{FredClientOptions.FredClient}"));
             });

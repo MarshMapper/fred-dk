@@ -22,16 +22,16 @@ namespace FredDKSample
             var releaseService = services.GetService<IFredReleaseService>();
             var seriesService = services.GetService<IFredSeriesService>();
             var sourceService = services.GetService<IFredSourceService>();
-            var tagService = services.GetService<IFredTagsService>();
+            var tagsService = services.GetService<IFredTagsService>();
 
             if (categoryService != null && releaseService != null && 
-                seriesService != null && sourceService != null)
+                seriesService != null && sourceService != null && tagsService != null)
             {
                 await CategoryExample.GetSampleCategoryData(categoryService);
                 await ReleasesExample.GetSampleReleasesData(releaseService);
                 await SeriesExample.GetSampleSeriesData(seriesService);
                 await SourceExample.GetSampleSourceData(sourceService);
-                await TagsExample.GetSampleTagsData(tagService);
+                await TagsExample.GetSampleTagsData(tagsService);
             }
             else
             {

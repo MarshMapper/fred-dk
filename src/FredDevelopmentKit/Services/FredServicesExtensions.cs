@@ -28,6 +28,7 @@ namespace FredDevelopmentKit.Services
                 services.AddSingleton<IFredSeriesService, FredSeriesService>();
                 services.AddSingleton<IFredSourceService, FredSourceService>();
                 services.AddSingleton<IFredTagsService, FredTagsService>();
+                services.AddSingleton<IFredMapsService, FredMapsService>();
                 services.Configure<FredClientOptions>(
                     hostContext.Configuration.GetSection($"{FredClientOptions.FredClient}"));
             });

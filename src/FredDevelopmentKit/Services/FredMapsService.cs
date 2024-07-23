@@ -12,7 +12,7 @@ namespace FredDevelopmentKit.Services
 {
     public class FredMapsService : FredService, IFredMapsService
     {
-        public FredMapsService(FredHttpClient fredClient, IOptions<FredClientOptions> options) :
+        public FredMapsService(IFredHttpClient fredClient, IOptions<FredClientOptions> options) :
             base(fredClient, options)
         {
         }

@@ -7,7 +7,7 @@ namespace FredDevelopmentKit.Services
 {
     public class FredSourceService : FredService, IFredSourceService
     {
-        public FredSourceService(FredHttpClient fredClient, IOptions<FredClientOptions> options) :
+        public FredSourceService(IFredHttpClient fredClient, IOptions<FredClientOptions> options) :
             base(fredClient, options)
         {
         }

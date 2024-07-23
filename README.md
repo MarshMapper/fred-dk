@@ -9,9 +9,27 @@ The current version provides support for all endpoints on the Categories, Series
 except release/tables endpoint that is a special case.  
 
 ## Using
-The FredDevelopmentKit library can be added to any .NET 8.0+ application.  A sample console application,
-FredDKSample, and ASP.NET application, FredDKAspNetSample, are also provided to show how to register and
-use the services in each case.
+The FredDevelopmentKit library can be added to any .NET 8.0+ application.  To use from a Console application,
+you must first create a HostBuilder:  
+
+        public static async Task Main(string[] args)
+        {
+            var builder = Host.CreateDefaultBuilder(args);
+
+            // call extension method to add Fred services
+            builder.AddFredServices();
+
+            // services can then be requested and used 
+            var categoryService = services.GetService<IFredCategoryService>();
+
+            // call methods on the service ...
+        }
+
+From an ASP.NET application, the following method should be called with a WebApplicationBuilder
+
+            builder.Services.AddFredWebServices(builder.Configuration);
+
+Sample console (FredDKSample) and ASP.NET (FredDKAspNetSample) applications are also included.
 
 This software is not associated with the St. Louis Fed or FRED web site.  You must obtain your own
 API key to use the API, and it is your responsibility to follow all the terms of use:

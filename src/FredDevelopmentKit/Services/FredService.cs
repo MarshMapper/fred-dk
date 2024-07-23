@@ -6,10 +6,10 @@ namespace FredDevelopmentKit.Services
 {
     public class FredService
     {
-        protected readonly FredHttpClient _fredClient;
+        protected readonly IFredHttpClient _fredClient;
         private string _apiKey = "";
 
-        public FredService(FredHttpClient fredClient, IOptions<FredClientOptions> options)
+        public FredService(IFredHttpClient fredClient, IOptions<FredClientOptions> options)
         {
             _fredClient = fredClient;
             _apiKey = options.Value.ApiKey;

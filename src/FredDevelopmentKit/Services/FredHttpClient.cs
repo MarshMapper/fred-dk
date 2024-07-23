@@ -4,7 +4,12 @@ using Ardalis.Result;
 
 namespace FredDevelopmentKit.Services
 {
-    public class FredHttpClient
+    /// <summary>
+    /// Custom HttpClient for FRED API.  Sets the base URL, the default property naming policy (SnakeCaseLower), and 
+    /// provides a method to get JSON data from the API.  The method is a wrapper around the standard GetFromJsonAsync
+    /// that handles exceptions and returns a Result object.
+    /// </summary>
+    public class FredHttpClient : IFredHttpClient
     {
         private readonly HttpClient _httpClient;
         public FredHttpClient(HttpClient httpClient)

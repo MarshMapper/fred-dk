@@ -11,8 +11,8 @@ namespace FredDKSample
         {
             var builder = Host.CreateDefaultBuilder(args);
 
-            // for this console example, we'll use singleton services
-            builder.AddSingletonFredServices();
+            // call extension method to add Fred services
+            builder.AddFredServices();
 
             await GetSampleData(builder.Build().Services);
          }

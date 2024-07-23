@@ -1,5 +1,4 @@
 # fred-dk
-
 FRED Development Kit for .NET.  Provides easy access to APIs on the St. Louis Federal Reserve Economic
 Data (FRED) web site:
 
@@ -10,9 +9,9 @@ The current version provides support for all endpoints on the Categories, Series
 except release/tables endpoint that is a special case.  
 
 ## Using
-
-The FredDevelopmentKit library can be added to any .NET application.  A sample console application,
-FredDKSample, is also provided.
+The FredDevelopmentKit library can be added to any .NET 8.0+ application.  A sample console application,
+FredDKSample, and ASP.NET application, FredDKAspNetSample, are also provided to show how to register and
+use the services in each case.
 
 This software is not associated with the St. Louis Fed or FRED web site.  You must obtain your own
 API key to use the API, and it is your responsibility to follow all the terms of use:

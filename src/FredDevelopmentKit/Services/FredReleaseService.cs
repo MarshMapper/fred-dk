@@ -5,20 +5,73 @@ using Microsoft.Extensions.Options;
 
 namespace FredDevelopmentKit.Services
 {
+    // service to get data related to releases of economic data
     public class FredReleaseService : FredService, IFredReleaseService
     {
         public FredReleaseService(IFredHttpClient fredClient, IOptions<FredClientOptions> options) : 
             base(fredClient, options)
         {
         }
-        public async Task<Result<ReleaseResponseDto>> GetReleases()
+        // get all releases, optionally filtering by date range.  the FRED API does not provide this filtering
+        // in a single API, so this service will act as BFF / aggregator if a date range is provided.  in that
+        // case it will call the ReleaseDates API and filter the releases based on that result.
+        public async Task<Result<ReleasesResponseDto>> GetReleases(DateOnly? startDate = null, DateOnly? endDate = null)
         {             
             string releaseUrl = $"releases?{GetCommonUrlSegments()}";
-            return await _fredClient.GetFromJsonAsync<ReleaseResponseDto>(releaseUrl);
+
+            Result<ReleasesResponseDto> result = await _fredClient.GetFromJsonAsync<ReleasesResponseDto>(releaseUrl);
+            if (result.IsSuccess)
+            {
+                if (startDate.HasValue || endDate.HasValue)
+                {
+                    Result<ReleasesDatesResponseDto> releaseDatesResult = await GetReleasesDates(startDate, endDate);
+                    if (releaseDatesResult.IsSuccess)
+                    {
+                        // call the releases API again to get the releases in the given date range
+                        ReleasesDatesResponseDto? releaseDatesResponse = releaseDatesResult.Value;
+                        if (releaseDatesResponse != null && releaseDatesResponse.ReleaseDates != null)
+                        {
+                            // filter the releases based on the release dates response.  this response will contain
+                            // the release IDs that are in the date range, so only those IDs will be included in the
+                            // result.
+                            var filteredReleases = GetReleasesInDateRange(result.Value.Releases, releaseDatesResponse);
+                            result.Value.Releases = filteredReleases;
+                        }
+                    }
+                    else
+                    {
+                        return Result.NotFound();
+                    }
+                }
+                return result;
+            }
+            else
+            {
+                return Result.NotFound();
+            }
         }
-        public async Task<Result<ReleasesDatesResponseDto>> GetReleasesDates()
+        // helper method to filter releases based on the release dates response.  this response will contain
+        // the release IDs that are in the date range, so only those IDs will be included in the result.
+        public List<Release> GetReleasesInDateRange(List<Release> releases, ReleasesDatesResponseDto releaseDatesResponse)
+        {
+            HashSet<int> releaseIds = new HashSet<int>(releaseDatesResponse.ReleaseDates.Select(rd => rd.ReleaseId));
+
+            return releases.Where(r => releaseIds.Contains(r.Id)).ToList();
+        }
+        // get the dates of releases, optionally filtering by date range
+        public async Task<Result<ReleasesDatesResponseDto>> GetReleasesDates(DateOnly? startDate = null, DateOnly? endDate = null)
         {
             string releaseDatesUrl = $"releases/dates?{GetCommonUrlSegments()}";
+            
+            // if dates are provided, just pass them along to the API - up to the caller whether they make sense
+            if (startDate.HasValue)
+            {
+                releaseDatesUrl += $"&realtime_start={startDate.Value:yyyy-MM-dd}";
+            }
+            if (endDate.HasValue)
+            {
+                releaseDatesUrl += $"&realtime_end={endDate.Value:yyyy-MM-dd}";
+            }
             return await _fredClient.GetFromJsonAsync<ReleasesDatesResponseDto>(releaseDatesUrl);
         }
 

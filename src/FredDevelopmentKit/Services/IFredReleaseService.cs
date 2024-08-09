@@ -5,8 +5,8 @@ namespace FredDevelopmentKit.Services
 {
     public interface IFredReleaseService
     {
-        Task<Result<ReleaseResponseDto>> GetReleases();
-        Task<Result<ReleasesDatesResponseDto>> GetReleasesDates(); 
+        Task<Result<ReleasesResponseDto>> GetReleases(DateOnly? startDate = null, DateOnly? endDate = null);
+        Task<Result<ReleasesDatesResponseDto>> GetReleasesDates(DateOnly? startDate = null, DateOnly? endDate = null); 
         Task<Result<Release>> GetRelease(int releaseId);
         Task<Result<ReleaseDateResponseDto>> GetReleaseDates(int releaseId);
         Task<Result<RelatedSeriesResponseDto>> GetSeries(int releaseId);

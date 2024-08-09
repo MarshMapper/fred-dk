@@ -30,9 +30,9 @@ namespace FredDKAspNetSample
             app.UseAuthorization();
 
             // add a sample endpoint to get releases
-            app.MapGet("/api/releases", async (IFredReleaseService releaseService) =>
+            app.MapGet("/api/releases", async (IFredReleaseService releaseService, DateOnly? startDate, DateOnly? endDate) =>
             {
-                return (await releaseService.GetReleases()).ToMinimalApiResult();
+                return (await releaseService.GetReleases(startDate, endDate)).ToMinimalApiResult();
             });
 
             app.Run();

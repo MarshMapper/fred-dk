@@ -22,7 +22,21 @@ namespace FredDKSample.Examples
             ShowTagsResult(await releaseService.GetTags(19));
             ShowTagsResult(await releaseService.GetRelatedTags(19, new List<string> { "services", "quarterly" }));
         }
-        public static void ShowReleasesResults(Result<ReleaseResponseDto> releasesResult)
+        public static void ShowReleasesResults(Result<ReleasesResponseDto> releasesResult)
+        {
+            if (releasesResult.IsSuccess)
+            {
+                foreach (Release release in releasesResult.Value.Releases)
+                {
+                    Console.WriteLine($"Release name is {release.Name} id is {release.Id}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Releases not found");
+            }
+        }
+        public static void ShowReleaseDatesResults(Result<ReleaseResponseDto> releasesResult)
         {
             if (releasesResult.IsSuccess)
             {
